@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 
 const Homepage = () => {
   const url = 'https://tallercrudis2-backend.onrender.com/api/v1/universal/municipios'
+
   const [datos, setDatos] = useState([]);
 
   const [id, setId] = useState([]);
@@ -26,7 +27,7 @@ const Homepage = () => {
     console.log(respuesta)
     setDatos(respuesta.data);
   }
-
+  
   const openModal = (op, id, name, area, presupuesto) => {
     setId('');
     setName('');
@@ -55,10 +56,10 @@ const Homepage = () => {
     if(name.trim() === ''){
       show_alerta('Escribe el nombre del municipio','warning')
     }
-    else if(area.trim() === ''){
+    else if(area === 0){
       console.log('Escribe una área','warning')
     }
-    else if(presupuesto.trim() === ''){
+    else if(presupuesto === 0){
       console.log('Escribe un presupuesto','warning')
     }
     else{
@@ -91,8 +92,8 @@ const Homepage = () => {
 
   const deleteDato = (id, name) => {
     Swal.fire({
-      title:'Seguro de querer eliminar el dato '+name+' ?',
-      icon: 'question', text:'No se podra deshacer',
+      title:'¿Seguro de querer eliminar el dato '+name+' ?',
+      icon: 'question', text:'No se podrá deshacer',
       showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
     }).then((result)=>{
       if(result.isConfirmed){
