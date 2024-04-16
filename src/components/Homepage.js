@@ -5,7 +5,7 @@ import { show_alerta } from '../functions';
 import Swal from 'sweetalert2';
 
 const Homepage = () => {
-  const url = 'https://jsonplaceholder.typicode.com/todos/'
+  const url = 'https://tallercrudis2-backend.onrender.com/api/v1/universal/municipios'
   const [name, setName] = useState([]);
   const [description, setDescription] = useState([]);
 
@@ -24,7 +24,9 @@ const Homepage = () => {
   //read
   const getDatos = async () => {
     const respuesta = await axios.get(url);
+    console.log(respuesta)
     setDatos(respuesta.data);
+    
   }
 
   const openModal = (op, id, name, description, completed) => {
@@ -53,7 +55,7 @@ const Homepage = () => {
     var parametros;
     var metodo;
     if(name.trim() === ''){
-      show_alerta('Escribe el nombre del producto','warning')
+      show_alerta('Escribe el nombre de la persona','warning')
     }
     else if(description.trim() === ''){
       console.log('Escribe una descripcion','warning')
@@ -109,7 +111,7 @@ const Homepage = () => {
     <div className='App'>
       <div className="container ">
         <div className='row mt-3 d-flex justify-content-center align-items-center'>
-          <h1 class="display-4 text-center">Base de Datos</h1>
+          <h1 className="display-4 text-center">Base de Datos</h1>
         </div>
       </div>
 
