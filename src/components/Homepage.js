@@ -6,15 +6,14 @@ import Swal from 'sweetalert2';
 
 const Homepage = () => {
   const url = 'https://tallercrudis2-backend.onrender.com/api/v1/universal/municipios'
-  const [name, setName] = useState([]);
-  const [description, setDescription] = useState([]);
-
   const [datos, setDatos] = useState([]);
-  const [userid, setUserId] = useState([]);
-  const [Id, setId] = useState([]);
+
+  const [id, setId] = useState([]);
+  const [name, setName] = useState([]);
+  const [area, setArea] = useState([]);
+  const [presupuesto, setPresupuesto] = useState([]);
+
   const [title, setTitle] = useState([]);
-  const [completed, setCompleted] = useState([]);
-  
   const [operation, setOperation] = useState(1);
 
   useEffect(  () => {
@@ -26,25 +25,24 @@ const Homepage = () => {
     const respuesta = await axios.get(url);
     console.log(respuesta)
     setDatos(respuesta.data);
-    
   }
 
-  const openModal = (op, id, name, description, completed) => {
+  const openModal = (op, id, name, area, presupuesto) => {
     setId('');
     setName('');
-    setDescription('');
-    setCompleted('');
+    setArea('');
+    setPresupuesto('');
 
     setOperation(op);
     if(op === 1){
-      setTitle('Registrar Producto')
+      setTitle('Registrar Municipio')
     }
     else if(op === 2){
-      setTitle('Editar producto')
+      setTitle('Editar Municipio')
       setId(id);
       setName(name);
-      setDescription(description);
-      setCompleted(completed);
+      setArea(area);
+      setPresupuesto(presupuesto);
     }
     window.setTimeout(function(){
       document.getElementById('nombre').focus();
@@ -55,21 +53,21 @@ const Homepage = () => {
     var parametros;
     var metodo;
     if(name.trim() === ''){
-      show_alerta('Escribe el nombre de la persona','warning')
+      show_alerta('Escribe el nombre del municipio','warning')
     }
-    else if(description.trim() === ''){
-      console.log('Escribe una descripcion','warning')
+    else if(area.trim() === ''){
+      console.log('Escribe una área','warning')
     }
-    else if(completed.trim() === ''){
-      console.log('Escribe un precio','warning')
+    else if(presupuesto.trim() === ''){
+      console.log('Escribe un presupuesto','warning')
     }
     else{
       if(operation === 1){
-        parametros = {name:name.trim(),description: description.trim(), completed: completed}
+        parametros = {name:name.trim(),area: area.trim(), presupuesto: presupuesto}
         metodo= 'POST'
       }
       else{
-        parametros = {name:name.trim(),description: description.trim(), completed: completed}
+        parametros = {name:name.trim(),area: area.trim(), presupuesto: presupuesto}
         metodo= 'PUT'
       }
       enviarSolicitud(metodo, parametros)
@@ -111,7 +109,7 @@ const Homepage = () => {
     <div className='App'>
       <div className="container ">
         <div className='row mt-3 d-flex justify-content-center align-items-center'>
-          <h1 className="display-4 text-center">Base de Datos</h1>
+          <h1 className="display-4 text-center">Base de Datos Municipio</h1>
         </div>
       </div>
 
@@ -133,24 +131,25 @@ const Homepage = () => {
                   <tr>
                     <th>#</th>
                     <th>iD</th>
-                    <th>TITULO</th>
-                    <th>COMPLETADO</th>
+                    <th>NOMBRE</th>
+                    <th>ÁREA</th>
+                    <th>PRESUPUESTO</th>
                   </tr>
                 </thead>
                 <tbody className='table-group-divider'>
                   {datos.map( (data, i)=>(
-                    <tr key={data.userId}>
+                    <tr key={data.id}>
                       <td>{(i+1)}</td>
                       <td>{data.id}</td>
-                      <td>{data.title}</td>
-                      <td>{data.completed}</td>
+                      <td>{data.nombre}</td>
+                      <td>{data.area}</td>
                       <td>
-                        <button onClick={() => openModal(2,data.userId,data.id,data.title,data.completed)} 
+                        <button onClick={() => openModal(2,data.id,data.nombre,data.area,data.presupuesto)} 
                         className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalProducts'>
                           <i className='fa-solid fa-edit'></i>
                         </button>
                         &nbsp;
-                        <button onClick={()=> deleteDato(data.userId ,data.id)} className='btn btn-danger'>
+                        <button onClick={()=> deleteDato(data.id ,data.nombre)} className='btn btn-danger'>
                           <i className='fa-solid fa-trash'></i>
                         </button>
                       </td>
@@ -179,9 +178,14 @@ const Homepage = () => {
                 onChange={(e)=> setName(e.target.value)}></input>
               </div>
               <div className='input-group mb-3'>
-                <span className='input-group-text'><i className='fa-solid fa-comment'></i></span>
-                <input type='text' id="description" className='form-control' placeholder='Descripción' value={description}
-                onChange={(e)=> setDescription(e.target.value)}></input>
+                <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
+                <input type='text' id="area" className='form-control' placeholder='Área' value={area}
+                onChange={(e)=> setArea(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-money-bill'></i></span>
+                <input type='number' id="presupuesto" className='form-control' placeholder='Presupuesto' value={presupuesto}
+                onChange={(e)=> setPresupuesto(e.target.value)}></input>
               </div>
               <div className='d-grid col-6 mx-auto'>
                   <button onClick={() => validar()} className='btn btn-success'>
