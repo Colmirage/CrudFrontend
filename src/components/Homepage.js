@@ -64,19 +64,36 @@ const Homepage = () => {
     }
     else{
       if(operation === 1){
-        parametros = {name:name.trim(),area: area, presupuesto: presupuesto}
+        parametros = {nombre:name.trim(),area: parseInt(area), presupuesto: parseInt(presupuesto)}
         metodo= 'POST'
       }
       else{
-        parametros = {id:id,name:name.trim(),area: area, presupuesto: presupuesto}
+        parametros = {id:id,nombre:name.trim(),area: parseInt(area), presupuesto: parseInt(presupuesto)}
         metodo= 'PUT'
       }
+      console.log(parametros)
       enviarSolicitud(metodo, parametros)
     }
   }
 
   const enviarSolicitud = async(metodo, parametros) => {
     await axios({ method:metodo, url:url, data:parametros}).then(function(respuesta){
+      var tipo = respuesta.data[0];
+      var msj = respuesta.data[1];
+      show_alerta(msj,tipo)
+      if(tipo === 'success'){
+        document.getElementById('btnCerrar').click();
+        getDatos();
+      } 
+    })
+    .catch(function(error){
+      show_alerta('Error en la solicitud', 'error')
+      console.log(error)
+    })
+  }
+
+  const enviarSolicitudId = async(metodo, parametros, urlid) => {
+    await axios({ method:metodo, url:urlid, data:parametros}).then(function(respuesta){
       var tipo = respuesta.data[0];
       var msj = respuesta.data[1];
       show_alerta(msj,tipo)
@@ -99,7 +116,9 @@ const Homepage = () => {
     }).then((result)=>{
       if(result.isConfirmed){
         setId(id);
-        enviarSolicitud('DELETE',{id:id});
+        var urlid = url+'/:'+id
+        console.log(urlid, id)
+        enviarSolicitudId('DELETE',{id:id},{urlid:urlid});
       }
       else{
         show_alerta('El dato NO fue eliminado','info');
