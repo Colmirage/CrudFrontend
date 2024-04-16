@@ -63,11 +63,11 @@ const Homepage = () => {
     }
     else{
       if(operation === 1){
-        parametros = {name:name.trim(),area: area.trim(), presupuesto: presupuesto}
+        parametros = {name:name.trim(),area: area, presupuesto: presupuesto}
         metodo= 'POST'
       }
       else{
-        parametros = {name:name.trim(),area: area.trim(), presupuesto: presupuesto}
+        parametros = {name:name.trim(),area: area, presupuesto: presupuesto}
         metodo= 'PUT'
       }
       enviarSolicitud(metodo, parametros)
@@ -143,6 +143,7 @@ const Homepage = () => {
                       <td>{data.id}</td>
                       <td>{data.nombre}</td>
                       <td>{data.area}</td>
+                      <td>{data.presupuesto}</td>
                       <td>
                         <button onClick={() => openModal(2,data.id,data.nombre,data.area,data.presupuesto)} 
                         className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalProducts'>
@@ -179,7 +180,7 @@ const Homepage = () => {
               </div>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
-                <input type='text' id="area" className='form-control' placeholder='Área' value={area}
+                <input type='number' id="area" className='form-control' placeholder='Área' value={area}
                 onChange={(e)=> setArea(e.target.value)}></input>
               </div>
               <div className='input-group mb-3'>
