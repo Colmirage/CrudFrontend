@@ -56,11 +56,11 @@ const Homepage = () => {
     if(name.trim() === ''){
       show_alerta('Escribe el nombre del municipio','warning')
     }
-    else if(area === 0){
-      console.log('Escribe una área','warning')
+    else if(area === ''){
+      show_alerta('Escribe una área','warning')
     }
-    else if(presupuesto === 0){
-      console.log('Escribe un presupuesto','warning')
+    else if(presupuesto === ''){
+      show_alerta('Escribe un presupuesto','warning')
     }
     else{
       if(operation === 1){
@@ -68,7 +68,7 @@ const Homepage = () => {
         metodo= 'POST'
       }
       else{
-        parametros = {name:name.trim(),area: area, presupuesto: presupuesto}
+        parametros = {id:id,name:name.trim(),area: area, presupuesto: presupuesto}
         metodo= 'PUT'
       }
       enviarSolicitud(metodo, parametros)
@@ -79,14 +79,15 @@ const Homepage = () => {
     await axios({ method:metodo, url:url, data:parametros}).then(function(respuesta){
       var tipo = respuesta.data[0];
       var msj = respuesta.data[1];
-      console.log(msj,tipo)
+      show_alerta(msj,tipo)
       if(tipo === 'success'){
         document.getElementById('btnCerrar').click();
         getDatos();
       } 
     })
     .catch(function(error){
-      console.log('Error en la solicitud', error)
+      show_alerta('Error en la solicitud', 'error')
+      console.log(error)
     })
   }
 
