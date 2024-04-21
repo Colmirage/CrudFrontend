@@ -24,13 +24,11 @@ const Barrio = () => {
   //read
   const getDatos = async () => {
     const respuesta = await axios.get(url);
-
     setDatos(respuesta.data);
   }
 
   useEffect(  () => {
     getDatos()
-    console.log(datos)
   },[actividad]);
 
   const openModal = (op, id, nombre, poblacion, area, munid) => {

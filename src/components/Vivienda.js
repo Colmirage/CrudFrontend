@@ -7,15 +7,17 @@ import Navbar from './Navbar';
 
 const Vivienda = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const url = apiUrl + 'municipios/';
+  const url = apiUrl + 'viviendas/';
   const [actividad, setActividad] = useState(0);
 
   const [datos, setDatos] = useState([]);
 
   const [id, setId] = useState([]);
-  const [name, setName] = useState([]);
-  const [area, setArea] = useState([]);
-  const [presupuesto, setPresupuesto] = useState([]);
+  const [direccion, setDireccion] = useState([])
+  const [capacidad, setCapacidad] = useState([])
+  const [niveles, setNiveles] = useState([])
+  const [munid, setMunid] = useState([]);
+  const [propid, setPropid] = useState([])
 
   const [title, setTitle] = useState([]);
   const [operation, setOperation] = useState(1);
@@ -23,33 +25,37 @@ const Vivienda = () => {
   //read
   const getDatos = async () => {
     const respuesta = await axios.get(url);
-
     setDatos(respuesta.data);
   }
 
   useEffect(  () => {
     getDatos()
-  }, [actividad]);
+    
+  },[actividad]);
 
-  const openModal = (op, id, name, area, presupuesto) => {
+  const openModal = (op, direccion, capacidad, niveles, munid, propid) => {
     setId('');
-    setName('');
-    setArea('');
-    setPresupuesto('');
+    setDireccion('');
+    setCapacidad('');
+    setNiveles('');
+    setMunid('')
+    setPropid('')
 
     setOperation(op);
     if(op === 1){
-      setTitle('Registrar Municipio')
+      setTitle('Registrar Vivienda')
     }
     else if(op === 2){
-      setTitle('Editar Municipio')
+      setTitle('Editar Vivienda')
       setId(id);
-      setName(name);
-      setArea(area);
-      setPresupuesto(presupuesto);
+      setDireccion(direccion);
+      setCapacidad(capacidad);
+      setNiveles(niveles);
+      setMunid(munid)
+      setPropid(propid)
     }
     window.setTimeout(function(){
-      document.getElementById('nombre').focus();
+      document.getElementById('direccion').focus();
     },500)
   }
 
@@ -57,18 +63,21 @@ const Vivienda = () => {
     var parametros;
     var metodo;
     var urlid;
-    if(name.trim() === ''){
-      show_alerta('Escribe el nombre del municipio','warning')
+    if(direccion.trim() === ''){
+      show_alerta('Escribe la dirección','warning')
     }
-    else if(area === ''){
-      show_alerta('Escribe una área','warning')
+    else if(capacidad === ''){
+      show_alerta('Escribe una capacidad','warning')
     }
-    else if(presupuesto === ''){
-      show_alerta('Escribe un presupuesto','warning')
+    else if(niveles === ''){
+      show_alerta('Escribe la cantidad de niveles','warning')
+    }
+    else if(munid === ''){
+      show_alerta('Escribe el Id de un Municipio','warning')
     }
     else{
       if(operation === 1){
-        parametros = {nombre:name.trim(),area: parseInt(area), presupuesto: parseInt(presupuesto)}
+        parametros = {direccion:direccion.trim(),capacidad:parseInt(capacidad),niveles:parseInt(niveles),munid:munid}
         metodo= 'POST'
 
         console.log(parametros)
@@ -76,7 +85,7 @@ const Vivienda = () => {
       }
       else{
 
-        parametros = {id:id,nombre:name.trim(),area: parseInt(area), presupuesto: parseInt(presupuesto)}
+        parametros = {id:id,direccion:direccion.trim(),capacidad:parseInt(capacidad),niveles:parseInt(niveles),munid:munid}
         metodo= 'PUT'
         urlid = url+id
 
@@ -124,12 +133,12 @@ const Vivienda = () => {
     setActividad(actividad + 1);
   }
 
-  const deleteDato = (id, name) => {
+  const deleteDato = (id, direccion) => {
     var parametros;
     var metodo;
     var urlid;
     Swal.fire({
-      title:'¿Seguro de querer eliminar el dato '+name+' ?',
+      title:'¿Seguro de querer eliminar el dato '+direccion+' ?',
       icon: 'question', text:'No se podrá deshacer',
       showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
     }).then((result)=>{
@@ -154,7 +163,7 @@ const Vivienda = () => {
       </div>
       <div className="container ">
         <div className='row mt-3 d-flex justify-content-center align-items-center'>
-          <h1 className="display-4 text-center">Datos de las Viviendas</h1>
+          <h1 className="display-4 text-center">Datos de las viviendas</h1>
         </div>
       </div>
 
@@ -176,9 +185,11 @@ const Vivienda = () => {
                   <tr>
                     <th>#</th>
                     <th>iD</th>
-                    <th>NOMBRE</th>
-                    <th>ÁREA</th>
-                    <th>PRESUPUESTO</th>
+                    <th>DIRECCIÓN</th>
+                    <th>CAPACIDAD</th>
+                    <th>NIVELES</th>
+                    <th>ID MUNICIPIO</th>
+                    <th>ID PROPIETARIO</th>
                   </tr>
                 </thead>
                 <tbody className='table-group-divider'>
@@ -186,16 +197,18 @@ const Vivienda = () => {
                     <tr key={data.id}>
                       <td>{(i+1)}</td>
                       <td>{data.id}</td>
-                      <td>{data.nombre}</td>
-                      <td>{data.area}</td>
-                      <td>{data.presupuesto}</td>
+                      <td>{data.direccion}</td>
+                      <td>{data.capacidad}</td>
+                      <td>{data.niveles}</td>
+                      <td>{data.municipioId}</td>
+                      <td>{data.propietarioId}</td>
                       <td>
-                        <button onClick={() => openModal(2,data.id,data.nombre,data.area,data.presupuesto)} 
+                        <button onClick={() => openModal(2,data.id,data.direccion, data.capacidad,data.niveles,data.municipioId)} 
                         className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalProducts'>
                           <i className='fa-solid fa-edit'></i>
                         </button>
                         &nbsp;
-                        <button onClick={()=> deleteDato(data.id ,data.nombre)} className='btn btn-danger'>
+                        <button onClick={()=> deleteDato(data.id ,data.direccion)} className='btn btn-danger'>
                           <i className='fa-solid fa-trash'></i>
                         </button>
                       </td>
@@ -220,18 +233,28 @@ const Vivienda = () => {
               <input type='hidden' id='id'></input>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-person-rays'></i></span>
-                <input type='text' id="nombre" className='form-control' placeholder='Nombre' value={name}
-                onChange={(e)=> setName(e.target.value)}></input>
-              </div>
-              <div className='input-group mb-3'>
-                <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
-                <input type='number' id="area" className='form-control' placeholder='Área' value={area}
-                onChange={(e)=> setArea(e.target.value)}></input>
+                <input type='text' id="direccion" className='form-control' placeholder='Dirección' value={direccion}
+                onChange={(e)=> setDireccion(e.target.value)}></input>
               </div>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-money-bill'></i></span>
-                <input type='number' id="presupuesto" className='form-control' placeholder='Presupuesto' value={presupuesto}
-                onChange={(e)=> setPresupuesto(e.target.value)}></input>
+                <input type='number' id="capacidad" className='form-control' placeholder='Capacidad' value={capacidad}
+                onChange={(e)=> setCapacidad(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
+                <input type='number' id="niveles" className='form-control' placeholder='Niveles' value={niveles}
+                onChange={(e)=> setNiveles(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
+                <input type='number' id="municipioId" className='form-control' placeholder='Id Municipio' value={munid}
+                onChange={(e)=> setMunid(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
+                <input type='number' id="propietarioId" className='form-control' placeholder='Id Propietario' value={propid}
+                onChange={(e)=> setPropid(e.target.value)}></input>
               </div>
               <div className='d-grid col-6 mx-auto'>
                   <button onClick={() => validar()} className='btn btn-success'>
