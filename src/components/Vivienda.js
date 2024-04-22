@@ -33,7 +33,7 @@ const Vivienda = () => {
     
   },[actividad]);
 
-  const openModal = (op, direccion, capacidad, niveles, munid, propid) => {
+  const openModal = (op, id, direccion, capacidad, niveles, munid, propid) => {
     setId('');
     setDireccion('');
     setCapacidad('');
@@ -203,7 +203,7 @@ const Vivienda = () => {
                       <td>{data.municipioId}</td>
                       <td>{data.propietarioId}</td>
                       <td>
-                        <button onClick={() => openModal(2,data.id,data.direccion, data.capacidad,data.niveles,data.municipioId)} 
+                        <button onClick={() => openModal(2,data.id,data.direccion, data.capacidad,data.niveles,data.municipioId, data.propietarioId)} 
                         className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalProducts'>
                           <i className='fa-solid fa-edit'></i>
                         </button>

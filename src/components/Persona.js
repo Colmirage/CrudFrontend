@@ -7,15 +7,18 @@ import Navbar from './Navbar';
 
 const Persona = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const url = apiUrl + 'municipios/';
+  const url = apiUrl + 'personas/';
   const [actividad, setActividad] = useState(0);
 
   const [datos, setDatos] = useState([]);
 
   const [id, setId] = useState([]);
-  const [name, setName] = useState([]);
-  const [area, setArea] = useState([]);
-  const [presupuesto, setPresupuesto] = useState([]);
+  const [nombre, setNombre] = useState([]);
+  const [telefono, setTelefono] = useState([]);
+  const [edad, setEdad] = useState([]);
+  const [genero, setGenero] = useState([]);
+  const [cabezaId, setCabezaId] = useState([]);
+  const [municipioId, setMunicipioId] = useState([]);
 
   const [title, setTitle] = useState([]);
   const [operation, setOperation] = useState(1);
@@ -23,7 +26,6 @@ const Persona = () => {
   //read
   const getDatos = async () => {
     const respuesta = await axios.get(url);
-
     setDatos(respuesta.data);
   }
 
@@ -31,22 +33,28 @@ const Persona = () => {
     getDatos()
   }, [actividad]);
 
-  const openModal = (op, id, name, area, presupuesto) => {
+  const openModal = (op, id, nombre, telefono, edad, genero, cabezaId, municipioId) => {
     setId('');
-    setName('');
-    setArea('');
-    setPresupuesto('');
+    setNombre('');
+    setTelefono('');
+    setEdad('');
+    setGenero('');
+    setCabezaId('');
+    setMunicipioId('');
 
     setOperation(op);
     if(op === 1){
-      setTitle('Registrar Municipio')
+      setTitle('Registrar Persona')
     }
     else if(op === 2){
-      setTitle('Editar Municipio')
+      setTitle('Editar Persona')
       setId(id);
-      setName(name);
-      setArea(area);
-      setPresupuesto(presupuesto);
+      setNombre(nombre);
+      setTelefono(telefono);
+      setEdad(edad);
+      setGenero(genero);
+      setCabezaId(cabezaId);
+      setMunicipioId(municipioId);
     }
     window.setTimeout(function(){
       document.getElementById('nombre').focus();
@@ -57,18 +65,25 @@ const Persona = () => {
     var parametros;
     var metodo;
     var urlid;
-    if(name.trim() === ''){
-      show_alerta('Escribe el nombre del municipio','warning')
+    if(nombre.trim() === ''){
+      show_alerta('Escribe el nombre de la persona','warning')
     }
-    else if(area === ''){
-      show_alerta('Escribe una área','warning')
+    else if(telefono === ''){
+      show_alerta('Escribe una telefono','warning')
     }
-    else if(presupuesto === ''){
-      show_alerta('Escribe un presupuesto','warning')
+    else if(edad === ''){
+      show_alerta('Escribe una edad','warning')
+    }
+    else if(genero.trim() === ''){
+      show_alerta('Escribe el genero','warning')
+    }
+    else if(municipioId === ''){
+      show_alerta('Escribe el Id de un Municipio','warning')
     }
     else{
       if(operation === 1){
-        parametros = {nombre:name.trim(),area: parseInt(area), presupuesto: parseInt(presupuesto)}
+        parametros = {nombre_persona:nombre.trim(),telefono:parseInt(telefono),edad:parseInt(edad),
+        genero:genero.trim(),cabezaId:cabezaId,municipioId:parseInt(municipioId)}
         metodo= 'POST'
 
         console.log(parametros)
@@ -76,7 +91,8 @@ const Persona = () => {
       }
       else{
 
-        parametros = {id:id,nombre:name.trim(),area: parseInt(area), presupuesto: parseInt(presupuesto)}
+        parametros = {id:id,nombre_persona:nombre.trim(),telefono:parseInt(telefono),edad:parseInt(edad),
+          genero:genero.trim(),cabezaId:parseInt(cabezaId),municipioId:parseInt(municipioId)}
         metodo= 'PUT'
         urlid = url+id
 
@@ -124,12 +140,12 @@ const Persona = () => {
     setActividad(actividad + 1);
   }
 
-  const deleteDato = (id, name) => {
+  const deleteDato = (id, nombre) => {
     var parametros;
     var metodo;
     var urlid;
     Swal.fire({
-      title:'¿Seguro de querer eliminar el dato '+name+' ?',
+      title:'¿Seguro de querer eliminar el dato '+nombre+' ?',
       icon: 'question', text:'No se podrá deshacer',
       showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
     }).then((result)=>{
@@ -177,8 +193,11 @@ const Persona = () => {
                     <th>#</th>
                     <th>iD</th>
                     <th>NOMBRE</th>
-                    <th>ÁREA</th>
-                    <th>PRESUPUESTO</th>
+                    <th>TELÉFONO</th>
+                    <th>EDAD</th>
+                    <th>GÉNERO</th>
+                    <th>ID CDF</th>
+                    <th>ID MUNICIPIO</th>
                   </tr>
                 </thead>
                 <tbody className='table-group-divider'>
@@ -186,16 +205,20 @@ const Persona = () => {
                     <tr key={data.id}>
                       <td>{(i+1)}</td>
                       <td>{data.id}</td>
-                      <td>{data.nombre}</td>
-                      <td>{data.area}</td>
-                      <td>{data.presupuesto}</td>
+                      <td>{data.nombre_persona}</td>
+                      <td>{data.telefono}</td>
+                      <td>{data.edad}</td>
+                      <td>{data.genero}</td>
+                      <td>{data.cabezaId}</td>
+                      <td>{data.municipioId}</td>
                       <td>
-                        <button onClick={() => openModal(2,data.id,data.nombre,data.area,data.presupuesto)} 
+                        <button onClick={() => openModal(2,data.id,data.nombre_persona,data.telefono,
+                        data.edad, data.genero, data.cabezaId, data.municipioId)} 
                         className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalProducts'>
                           <i className='fa-solid fa-edit'></i>
                         </button>
                         &nbsp;
-                        <button onClick={()=> deleteDato(data.id ,data.nombre)} className='btn btn-danger'>
+                        <button onClick={()=> deleteDato(data.id ,data.nombre_persona)} className='btn btn-danger'>
                           <i className='fa-solid fa-trash'></i>
                         </button>
                       </td>
@@ -220,18 +243,33 @@ const Persona = () => {
               <input type='hidden' id='id'></input>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-person-rays'></i></span>
-                <input type='text' id="nombre" className='form-control' placeholder='Nombre' value={name}
-                onChange={(e)=> setName(e.target.value)}></input>
+                <input type='text' id="nombre" className='form-control' placeholder='Nombre' value={nombre}
+                onChange={(e)=> setNombre(e.target.value)}></input>
               </div>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-city'></i></span>
-                <input type='number' id="area" className='form-control' placeholder='Área' value={area}
-                onChange={(e)=> setArea(e.target.value)}></input>
+                <input type='number' id="telefono" className='form-control' placeholder='Teléfono' value={telefono}
+                onChange={(e)=> setTelefono(e.target.value)}></input>
               </div>
               <div className='input-group mb-3'>
                 <span className='input-group-text'><i className='fa-solid fa-money-bill'></i></span>
-                <input type='number' id="presupuesto" className='form-control' placeholder='Presupuesto' value={presupuesto}
-                onChange={(e)=> setPresupuesto(e.target.value)}></input>
+                <input type='number' id="edad" className='form-control' placeholder='Edad' value={edad}
+                onChange={(e)=> setEdad(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-person-rays'></i></span>
+                <input type='text' id="genero" className='form-control' placeholder='Género' value={genero}
+                onChange={(e)=> setGenero(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-money-bill'></i></span>
+                <input type='number' id="cabezaId" className='form-control' placeholder='Id Cabeza de Familia' value={cabezaId === null ? '' : cabezaId}
+                onChange={(e)=> setCabezaId(e.target.value)}></input>
+              </div>
+              <div className='input-group mb-3'>
+                <span className='input-group-text'><i className='fa-solid fa-money-bill'></i></span>
+                <input type='number' id="municipioId" className='form-control' placeholder='Id del Municipio' value={municipioId}
+                onChange={(e)=> setMunicipioId(e.target.value)}></input>
               </div>
               <div className='d-grid col-6 mx-auto'>
                   <button onClick={() => validar()} className='btn btn-success'>
