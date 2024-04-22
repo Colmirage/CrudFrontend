@@ -64,20 +64,41 @@ const Vivienda = () => {
     var metodo;
     var urlid;
     if(direccion.trim() === ''){
-      show_alerta('Escribe la dirección','warning')
+      show_alerta('Escribe una dirección','warning')
+    }
+    else if(direccion.length < 45){
+      show_alerta('La dirección debe tener menos de 45 caracteres','warning')
     }
     else if(capacidad === ''){
       show_alerta('Escribe una capacidad','warning')
     }
+    else if(capacidad > 10){
+      show_alerta('La capacidad debe ser menor a 10','warning')
+    }
+    else if(capacidad < 1){
+      show_alerta('La capacidad no puede ser negativa','warning')
+    }
     else if(niveles === ''){
       show_alerta('Escribe la cantidad de niveles','warning')
+    }
+    else if(niveles < 1){
+      show_alerta('Los niveles no pueden ser negativos','warning')
     }
     else if(munid === ''){
       show_alerta('Escribe el Id de un Municipio','warning')
     }
+    else if(munid < 0){
+      show_alerta('El Id de un Municipio no puede ser negativo','warning')
+    }
+    else if(propid === ''){
+      show_alerta('Escribe el Id de Propietario','warning')
+    }
+    else if(propid < 0){
+      show_alerta('El Id de propietario no puede ser negativo','warning')
+    }
     else{
       if(operation === 1){
-        parametros = {direccion:direccion.trim(),capacidad:parseInt(capacidad),niveles:parseInt(niveles),munid:munid}
+        parametros = {direccion:direccion.trim(),capacidad:parseInt(capacidad),niveles:parseInt(niveles),municipioId:parseInt(munid),propietarioId:parseInt(propid)}
         metodo= 'POST'
 
         console.log(parametros)
@@ -85,7 +106,7 @@ const Vivienda = () => {
       }
       else{
 
-        parametros = {id:id,direccion:direccion.trim(),capacidad:parseInt(capacidad),niveles:parseInt(niveles),munid:munid}
+        parametros = {id:id,direccion:direccion.trim(),capacidad:parseInt(capacidad),niveles:parseInt(niveles),municipioId:parseInt(munid),propietarioId:parseInt(propid)}
         metodo= 'PUT'
         urlid = url+id
 

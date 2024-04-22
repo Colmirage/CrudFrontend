@@ -69,13 +69,22 @@ const Persona = () => {
       show_alerta('Escribe el nombre de la persona','warning')
     }
     else if(telefono === ''){
-      show_alerta('Escribe una telefono','warning')
+      show_alerta('Escribe un teléfono','warning')
+    }
+    else if(telefono.length !== 10){
+      show_alerta('El teléfono debe tener 10 de longitud','warning')
     }
     else if(edad === ''){
       show_alerta('Escribe una edad','warning')
     }
+    else if(edad < 0){
+      show_alerta('La edad no puede ser negativa','warning')
+    }
     else if(genero.trim() === ''){
-      show_alerta('Escribe el genero','warning')
+      show_alerta('Escribe el género','warning')
+    }
+    else if(genero !== 'Masculino' && genero !== 'masculino' && genero !== 'femenino' && genero !== 'Femenino'){
+      show_alerta('Escribe un género válido','warning')
     }
     else if(municipioId === ''){
       show_alerta('Escribe el Id de un Municipio','warning')
@@ -83,7 +92,7 @@ const Persona = () => {
     else{
       if(operation === 1){
         parametros = {nombre_persona:nombre.trim(),telefono:parseInt(telefono),edad:parseInt(edad),
-        genero:genero.trim(),cabezaId:cabezaId,municipioId:parseInt(municipioId)}
+        genero:genero.trim(),cabezaId:parseInt(cabezaId),municipioId:parseInt(municipioId)}
         metodo= 'POST'
 
         console.log(parametros)

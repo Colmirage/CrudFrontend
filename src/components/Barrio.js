@@ -62,18 +62,27 @@ const Barrio = () => {
     if(nombre.trim() === ''){
       show_alerta('Escribe el nombre del Barrio','warning')
     }
+    else if(nombre.length > 45){
+      show_alerta('El nombre debe tener menos de 45 caracteres')
+    }
     else if(poblacion === ''){
       show_alerta('Escribe una cantidad de población','warning')
     }
+    else if(poblacion < 1){
+      show_alerta('La población no puede ser negativa','warning')
+    }
     else if(area === ''){
-      show_alerta('Escribe una área','warning')
+      show_alerta('Escribe un área','warning')
+    }
+    else if(area < 1){
+      show_alerta('El area no puede ser negativa','warning')
     }
     else if(munid === ''){
       show_alerta('Escribe el Id de un Municipio','warning')
     }
     else{
       if(operation === 1){
-        parametros = {nombre:nombre.trim(),poblacion: parseInt(poblacion),area: parseInt(area),munid:munid}
+        parametros = {nombre:nombre.trim(),poblacion: parseInt(poblacion),area: parseInt(area),municipioId:parseInt(munid)}
         metodo= 'POST'
 
         console.log(parametros)
@@ -81,7 +90,7 @@ const Barrio = () => {
       }
       else{
 
-        parametros = {id:id,nombre:nombre.trim(),poblacion: parseInt(poblacion),area: parseInt(area),munid:munid}
+        parametros = {id:id,nombre:nombre.trim(),poblacion: parseInt(poblacion),area: parseInt(area),municipioId:parseInt(munid)}
         metodo= 'PUT'
         urlid = url+id
 
@@ -183,7 +192,7 @@ const Barrio = () => {
                     <th>iD</th>
                     <th>NOMBRE</th>
                     <th>POBLACIÓN</th>
-                    <th>ÁREA</th>
+                    <th>ÁREA M2</th>
                     <th>ID MUNICIPIO</th>
                   </tr>
                 </thead>

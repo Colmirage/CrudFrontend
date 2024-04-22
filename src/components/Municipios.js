@@ -60,11 +60,20 @@ const Municipios = () => {
     if(name.trim() === ''){
       show_alerta('Escribe el nombre del municipio','warning')
     }
+    else if(name.length > 45){
+      show_alerta('El nombre debe tener menos de 45 caracteres','warning')
+    }
     else if(area === ''){
-      show_alerta('Escribe una área','warning')
+      show_alerta('Escribe un área','warning')
+    }
+    else if(area < 1){
+      show_alerta('El area no puede ser negativa','warning')
     }
     else if(presupuesto === ''){
       show_alerta('Escribe un presupuesto','warning')
+    }
+    else if(presupuesto < 1){
+      show_alerta('El presupuesto no puede ser negativo','warning')
     }
     else{
       if(operation === 1){
@@ -83,8 +92,6 @@ const Municipios = () => {
         console.log(url,parametros,urlid)
         enviarSolicitudId(metodo, parametros, urlid)
       }
-      
-      
     }
   }
 
@@ -178,7 +185,7 @@ const Municipios = () => {
                     <th>#</th>
                     <th>iD</th>
                     <th>NOMBRE</th>
-                    <th>ÁREA</th>
+                    <th>ÁREA KM2</th>
                     <th>PRESUPUESTO</th>
                   </tr>
                 </thead>
