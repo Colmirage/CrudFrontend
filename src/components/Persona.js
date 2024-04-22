@@ -71,9 +71,6 @@ const Persona = () => {
     else if(telefono === ''){
       show_alerta('Escribe un teléfono','warning')
     }
-    else if(telefono.length !== 10){
-      show_alerta('El teléfono debe tener 10 dígitos de longitud','warning')
-    }
     else if(edad === ''){
       show_alerta('Escribe una edad','warning')
     }
