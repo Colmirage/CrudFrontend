@@ -72,7 +72,7 @@ const Persona = () => {
       show_alerta('Escribe un teléfono','warning')
     }
     else if(telefono.length !== 10){
-      show_alerta('El teléfono debe tener 10 de longitud','warning')
+      show_alerta('El teléfono debe tener 10 dígitos de longitud','warning')
     }
     else if(edad === ''){
       show_alerta('Escribe una edad','warning')
@@ -84,7 +84,7 @@ const Persona = () => {
       show_alerta('Escribe el género','warning')
     }
     else if(genero !== 'Masculino' && genero !== 'masculino' && genero !== 'femenino' && genero !== 'Femenino'){
-      show_alerta('Escribe un género válido','warning')
+      show_alerta('Escribe un género válido (Masculino/Femenino)','warning')
     }
     else if(municipioId === ''){
       show_alerta('Escribe el Id de un Municipio','warning')

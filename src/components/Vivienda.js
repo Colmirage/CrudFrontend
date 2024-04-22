@@ -63,11 +63,9 @@ const Vivienda = () => {
     var parametros;
     var metodo;
     var urlid;
+    
     if(direccion.trim() === ''){
       show_alerta('Escribe una dirección','warning')
-    }
-    else if(direccion.length < 45){
-      show_alerta('La dirección debe tener menos de 45 caracteres','warning')
     }
     else if(capacidad === ''){
       show_alerta('Escribe una capacidad','warning')
